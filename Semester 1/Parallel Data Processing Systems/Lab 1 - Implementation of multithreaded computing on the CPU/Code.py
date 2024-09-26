@@ -1,6 +1,7 @@
 from PIL import Image
 import numpy as np
 import threading
+import time
 
 kernel_relief = np.array([[-2, -1, 0],
                           [-1,  1, 1],
@@ -10,7 +11,21 @@ kernel_relief = np.array([[-2, -1, 0],
 padding = 0
 stride = 1
 
-threads_number = 2
+threads_quantity = 16
+
+# Разделение матрицы на две части
+def split_matrix(matrix, parts_quantity):
+    indexes = []
+    parts = []
+    for i in range(parts_quantity+1):
+        indexes.append((matrix.shape[0]//parts_quantity)*i)
+
+    i = 0
+    while (i < parts_quantity):
+        parts.append(matrix[indexes[i]:indexes[i+1]])
+        i += 1
+    
+    return parts
 
 def get_rgb_matrices(image_path):
     image = Image.open(image_path)
@@ -98,5 +113,37 @@ def convolution(kernel, input_arr, padding, stride):
     return output_arr
 
 
-# r, g, b = get_rgb_matrices('C:/Users/Ruslan/Desktop/TPU-09.04.04-Software-Engineering/Semester 1/Parallel Data Processing Systems/Lab 1 - Implementation of multithreaded computing on the CPU/collage 10240.png')
+r, g, b = get_rgb_matrices('C:/Users/Ruslan/Desktop/TPU-09.04.04-Software-Engineering/Semester 1/Parallel Data Processing Systems/Lab 1 - Implementation of multithreaded computing on the CPU/collage 10240.png')
+list = []
+threads = []
+start_time = time.time()
+
+list = split_matrix(r, threads_quantity)
+for i in list:
+    threads.append(threading.Thread(target=convolution, args=(kernel_relief, i, padding, stride)))
+
+for thread in threads:
+    thread.start()
+
+for thread in threads:
+    thread.join()
+end_time = time.time()    
+print(f'time: {end_time - start_time}\n')
+print(f'threads: {threads_quantity}\n')
+
+# print(r.shape)
+# print(r1.shape)
+# print(r2.shape)
+# t1 = threading.Thread(target=convolution, args=(kernel_relief, r1, padding, stride))
+# t2 = threading.Thread(target=convolution, args=(kernel_relief, r2, padding, stride))
+
+# # Запуск потоков
+# t1.start()
+# t2.start()
+# # Ожидание завершения обоих потоков
+# t1.join()
+# t2.join()
+
+# print('done')
+
 # image = [r,g,b]
