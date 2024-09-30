@@ -2,11 +2,13 @@ from PIL import Image
 import numpy as np
 import threading
 import time
+import cv2
 
 kernel_relief = np.array([[-2, -1, 0],
                           [-1,  1, 1],
                           [ 0,  1, 2]])
 
+images = ['collage 10240.png','cruella 20480.jpg','iceland 12800.jpg']
 
 padding = 0
 stride = 1
@@ -112,38 +114,43 @@ def convolution(kernel, input_arr, padding, stride):
         k += 1
     return output_arr
 
+def not_mine_convolution(index, image_part, kernel, result):
+    convoluted_image = cv2.filter2D(image_part, -1, kernel)
+    result[index] = convoluted_image
 
-r, g, b = get_rgb_matrices('C:/Users/Ruslan/Desktop/TPU-09.04.04-Software-Engineering/Semester 1/Parallel Data Processing Systems/Lab 1 - Implementation of multithreaded computing on the CPU/collage 10240.png')
-list = []
-threads = []
-start_time = time.time()
+time_diffs = []
 
-list = split_matrix(r, threads_quantity)
-for i in list:
-    threads.append(threading.Thread(target=convolution, args=(kernel_relief, i, padding, stride)))
+for i in range(5):
+    start_time = time.time()
+    for image_name in images:
+        image = cv2.imread(image_name, cv2.IMREAD_COLOR)
+        print(f'image: {image_name}, image shape: {image.shape}')
+        parts = split_matrix(image, threads_quantity)
+        print(f'parts count: {len(parts)}, shape of one part: {parts[0].shape}')
 
-for thread in threads:
-    thread.start()
+        threads = []
+        # Инициализация списка для результатов с фиксированным размером
+        result_list = [None] * threads_quantity
 
-for thread in threads:
-    thread.join()
-end_time = time.time()    
-print(f'time: {end_time - start_time}\n')
-print(f'threads: {threads_quantity}\n')
+        for index, part in enumerate(parts):
+            thread = threading.Thread(target=not_mine_convolution, args=(index, part, kernel_relief, result_list))
+            threads.append(thread)
 
-# print(r.shape)
-# print(r1.shape)
-# print(r2.shape)
-# t1 = threading.Thread(target=convolution, args=(kernel_relief, r1, padding, stride))
-# t2 = threading.Thread(target=convolution, args=(kernel_relief, r2, padding, stride))
+        for thread in threads:
+            thread.start()
 
-# # Запуск потоков
-# t1.start()
-# t2.start()
-# # Ожидание завершения обоих потоков
-# t1.join()
-# t2.join()
+        for thread in threads:
+            thread.join()
 
-# print('done')
+        final_image = np.vstack(result_list)
 
-# image = [r,g,b]
+        final_image_name = image_name + 'convoluted.jpg'
+        cv2.imwrite(final_image_name, final_image)
+
+    end_time = time.time()
+    time_diffs.append(end_time - start_time)
+    print(f'time: {end_time - start_time}')
+    print(f'threads: {threads_quantity}\n')
+
+for time_diff in time_diffs:
+    print(f'td = {time_diff}')
