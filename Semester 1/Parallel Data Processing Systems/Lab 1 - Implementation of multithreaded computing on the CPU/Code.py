@@ -1,6 +1,8 @@
+import multiprocessing.process
 from PIL import Image
 import numpy as np
 import threading
+import multiprocessing
 import time
 import cv2
 
@@ -13,7 +15,7 @@ images = ['collage 10240.png','cruella 20480.jpg','iceland 12800.jpg']
 padding = 0
 stride = 1
 
-threads_quantity = 16
+threads_quantities = [6, 12]
 
 # Разделение матрицы на две части
 def split_matrix(matrix, parts_quantity):
@@ -117,40 +119,50 @@ def convolution(kernel, input_arr, padding, stride):
 def not_mine_convolution(index, image_part, kernel, result):
     convoluted_image = cv2.filter2D(image_part, -1, kernel)
     result[index] = convoluted_image
+for threads_quantity in threads_quantities:
+    if __name__ == '__main__':
+        time_diffs = []
+        for i in range(5):
+            start_time = time.time()
+            for image_name in images:
+                image = cv2.imread(image_name, cv2.IMREAD_COLOR)
+                print(f'image: {image_name}, image shape: {image.shape}')
+                parts = split_matrix(image, threads_quantity)
+                print(f'parts count: {len(parts)}, shape of one part: {parts[0].shape}')
+                
+                with multiprocessing.Manager() as manager:
+                    processes = []
+                    # Инициализация списка для результатов с фиксированным размером
+                    result_list = manager.list([None] * threads_quantity)
+                    
+                    for index, part in enumerate(parts):
+                        process = multiprocessing.Process(target=not_mine_convolution, args=(index, part, kernel_relief, result_list))
+                        processes.append(process)
+                        # thread = threading.Thread(target=not_mine_convolution, args=(index, part, kernel_relief, result_list))
+                        # threads.append(thread)
 
-time_diffs = []
+                    # for thread in threads:
+                    #     thread.start()
+                    
+                    for process in processes:
+                        process.start()
 
-for i in range(5):
-    start_time = time.time()
-    for image_name in images:
-        image = cv2.imread(image_name, cv2.IMREAD_COLOR)
-        print(f'image: {image_name}, image shape: {image.shape}')
-        parts = split_matrix(image, threads_quantity)
-        print(f'parts count: {len(parts)}, shape of one part: {parts[0].shape}')
+                    # for thread in threads:
+                    #     thread.join()
 
-        threads = []
-        # Инициализация списка для результатов с фиксированным размером
-        result_list = [None] * threads_quantity
+                    for process in processes:
+                        process.join()
+                    
+                    final_image = np.vstack(list(result_list))
 
-        for index, part in enumerate(parts):
-            thread = threading.Thread(target=not_mine_convolution, args=(index, part, kernel_relief, result_list))
-            threads.append(thread)
+                final_image_name = image_name + 'convoluted.jpg'
+                cv2.imwrite(final_image_name, final_image)
 
-        for thread in threads:
-            thread.start()
+            end_time = time.time()
+            time_diffs.append(end_time - start_time)
+            print(f'time: {end_time - start_time}')
+            print(f'processes: {threads_quantity}\n')
 
-        for thread in threads:
-            thread.join()
-
-        final_image = np.vstack(result_list)
-
-        final_image_name = image_name + 'convoluted.jpg'
-        cv2.imwrite(final_image_name, final_image)
-
-    end_time = time.time()
-    time_diffs.append(end_time - start_time)
-    print(f'time: {end_time - start_time}')
-    print(f'threads: {threads_quantity}\n')
-
-for time_diff in time_diffs:
-    print(f'td = {time_diff}')
+        print(f'processes: {threads_quantity}')
+        for time_diff in time_diffs:
+            print(f'td = {time_diff}')
