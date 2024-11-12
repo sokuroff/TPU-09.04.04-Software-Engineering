@@ -112,14 +112,10 @@ plot(perf.splsda.wine$features$stable[[5]], type = 'h',
      ylab = 'Stability', 
      xlab = 'Features',
      main = '(e) Comp 5', las =2)
-plot(perf.splsda.wine$features$stable[[6]], type = 'h', 
-     ylab = 'Stability', 
-     xlab = 'Features',
-     main = '(f) Comp 6', las =2)
 
 var.name.short <- substr(names(X), 1, 10)
 
-plotVar(final.splsda, comp = c(1,6), var.names = list(var.name.short), cex = 3) # генерируем корреляционный круг
+plotVar(final.splsda, comp = c(1,5), var.names = list(var.name.short), cex = 3) # генерируем корреляционный круг
 
 
 # Разделение датасета на обучающую и тестовую выборки в соотношении 80/20
@@ -145,11 +141,11 @@ predict.comp2 <- predict.splsda.wine$class$mahalanobis.dist[, 2]
 table(factor(predict.comp2, levels = levels(Y)), Y.test)
 
 
-# оценка предсказательной способности для 6 компонент
-predict.comp6 <- predict.splsda.wine$class$mahalanobis.dist[,6]
+# оценка предсказательной способности для 5 компонент
+predict.comp6 <- predict.splsda.wine$class$mahalanobis.dist[,5]
 table(factor(predict.comp6, levels = levels(Y)), Y.test)
 
 
 auc.splsda = auroc(final.splsda, roc.comp = 1, print = FALSE) # AUROC для первой компоненты
 
-auc.splsda = auroc(final.splsda, roc.comp = 6, print = FALSE) # AUROC для всех компонент
+auc.splsda = auroc(final.splsda, roc.comp = 5, print = FALSE) # AUROC для всех компонент
