@@ -1,0 +1,26 @@
+[RESOURCES]
+Resource 10
+Resource 9
+Resource 8
+Resource 7
+Resource 6
+Resource 5
+Resource 4
+Resource 3
+Resource 2
+Resource 1
+[VARIABLES]
+Process 4.NumberOut
+main q full?.NumberOut True
+add_queue_amount
+main_process_amount
+Process 1.NumberIn
+main q full?.NumberOut False
+2nd q full?.NumberOut True
+2nd q full?.NumberOut False
+other terminal.NumberOut
+main terminal.NumberOut
+Create 1.NumberOut
+items_amount
+Process 4.NumberIn
+Process 1.NumberOut

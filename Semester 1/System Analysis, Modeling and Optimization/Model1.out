@@ -1,0 +1,99 @@
+SIMAN Run Controller.
+
+35.216907 Hours>
+                                      ARENA Simulation Results
+                              sokurov.yan@yandex.ru - License: STUDENT
+
+                                  Summary for Replication 1 of 1
+
+Project: Unnamed Project                                             Run execution date : 1/ 4/2025
+Analyst: sokurov.yan@yandex.ru                                       Model revision date: 1/ 4/2025
+
+Replication ended at time      : 35.216907 Hours 
+Base Time Units: Hours
+
+                                           TALLY VARIABLES
+
+Identifier                                  Average   Half Width  Minimum    Maximum   Observations
+___________________________________________________________________________________________________
+
+Entity 1.VATime                             .10230     .01391     .00000     .95112        343    
+Entity 1.NVATime                            .00000     .00000     .00000     .00000        343    
+Entity 1.WaitTime                           1.2297     .17422     .00000     7.7364        343    
+Entity 1.TranTime                           .00000     .00000     .00000     .00000        343    
+Entity 1.OtherTime                          .00000     .00000     .00000     .00000        343    
+Entity 1.TotalTime                          1.3320     .17521     .00000     8.1048        343    
+Process 4.Queue.WaitingTime                 1.7067     (Insuf)    .70526     2.7087         86    
+Process 1.Queue.WaitingTime                 1.4527     (Insuf)    .00000     2.7646        200    
+
+                                     DISCRETE-CHANGE VARIABLES
+
+Identifier                                  Average   Half Width  Minimum    Maximum   Final Value
+___________________________________________________________________________________________________
+
+Entity 1.WIP                                13.676     (Corr)     .00000     16.000     14.000    
+Resource 10.NumberBusy                      .99632     (Insuf)    .00000     1.0000     1.0000    
+Resource 10.NumberScheduled                 1.0000     (Insuf)    1.0000     1.0000     1.0000    
+Resource 10.Utilization                     .99632     (Insuf)    .00000     1.0000     1.0000    
+Resource 9.NumberBusy                       .99632     (Insuf)    .00000     1.0000     1.0000    
+Resource 9.NumberScheduled                  1.0000     (Insuf)    1.0000     1.0000     1.0000    
+Resource 9.Utilization                      .99632     (Insuf)    .00000     1.0000     1.0000    
+Resource 8.NumberBusy                       .99632     (Insuf)    .00000     1.0000     1.0000    
+Resource 8.NumberScheduled                  1.0000     (Insuf)    1.0000     1.0000     1.0000    
+Resource 8.Utilization                      .99632     (Insuf)    .00000     1.0000     1.0000    
+Resource 7.NumberBusy                       .99632     (Insuf)    .00000     1.0000     1.0000    
+Resource 7.NumberScheduled                  1.0000     (Insuf)    1.0000     1.0000     1.0000    
+Resource 7.Utilization                      .99632     (Insuf)    .00000     1.0000     1.0000    
+Resource 6.NumberBusy                       .99632     (Insuf)    .00000     1.0000     1.0000    
+Resource 6.NumberScheduled                  1.0000     (Insuf)    1.0000     1.0000     1.0000    
+Resource 6.Utilization                      .99632     (Insuf)    .00000     1.0000     1.0000    
+Resource 5.NumberBusy                       .99632     (Insuf)    .00000     1.0000     1.0000    
+Resource 5.NumberScheduled                  1.0000     (Insuf)    1.0000     1.0000     1.0000    
+Resource 5.Utilization                      .99632     (Insuf)    .00000     1.0000     1.0000    
+Resource 4.NumberBusy                       .99632     (Insuf)    .00000     1.0000     1.0000    
+Resource 4.NumberScheduled                  1.0000     (Insuf)    1.0000     1.0000     1.0000    
+Resource 4.Utilization                      .99632     (Insuf)    .00000     1.0000     1.0000    
+Resource 3.NumberBusy                       .99632     (Insuf)    .00000     1.0000     1.0000    
+Resource 3.NumberScheduled                  1.0000     (Insuf)    1.0000     1.0000     1.0000    
+Resource 3.Utilization                      .99632     (Insuf)    .00000     1.0000     1.0000    
+Resource 2.NumberBusy                       .99632     (Insuf)    .00000     1.0000     1.0000    
+Resource 2.NumberScheduled                  1.0000     (Insuf)    1.0000     1.0000     1.0000    
+Resource 2.Utilization                      .99632     (Insuf)    .00000     1.0000     1.0000    
+Resource 1.NumberBusy                       .99632     (Insuf)    .00000     1.0000     1.0000    
+Resource 1.NumberScheduled                  1.0000     (Insuf)    1.0000     1.0000     1.0000    
+Resource 1.Utilization                      .99632     (Insuf)    .00000     1.0000     1.0000    
+Process 4.Queue.NumberInQueue               4.2547     (Insuf)    .00000     5.0000     5.0000    
+Process 1.Queue.NumberInQueue               8.4253     (Insuf)    .00000     10.000     8.0000    
+
+                                             OUTPUTS
+
+Identifier                                   Value
+_____________________________________________________________
+
+Entity 1.NumberIn                           357.00    
+Entity 1.NumberOut                          343.00    
+Resource 10.NumberSeized                    200.00    
+Resource 10.ScheduledUtilization            .99632    
+Resource 9.NumberSeized                     200.00    
+Resource 9.ScheduledUtilization             .99632    
+Resource 8.NumberSeized                     200.00    
+Resource 8.ScheduledUtilization             .99632    
+Resource 7.NumberSeized                     200.00    
+Resource 7.ScheduledUtilization             .99632    
+Resource 6.NumberSeized                     200.00    
+Resource 6.ScheduledUtilization             .99632    
+Resource 5.NumberSeized                     286.00    
+Resource 5.ScheduledUtilization             .99632    
+Resource 4.NumberSeized                     286.00    
+Resource 4.ScheduledUtilization             .99632    
+Resource 3.NumberSeized                     286.00    
+Resource 3.ScheduledUtilization             .99632    
+Resource 2.NumberSeized                     286.00    
+Resource 2.ScheduledUtilization             .99632    
+Resource 1.NumberSeized                     286.00    
+Resource 1.ScheduledUtilization             .99632    
+System.NumberOut                            343.00    
+
+
+Simulation run time: 0.18 minutes.
+Simulation run complete.
