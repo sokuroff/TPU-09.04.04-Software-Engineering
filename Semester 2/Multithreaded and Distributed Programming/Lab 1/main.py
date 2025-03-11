@@ -6,66 +6,46 @@ import random
 ITERATIONS = 10
 AGENT_ACTIONS = ['LEFT', 'RIGHT', 'TOP', 'BOTTOM', 'STOP']
 
-
-
-def show_map(map):
-    map_str = '\n'.join([''.join(row) for row in map])
-    print(map_str)
-
-def create_main_agent(map):
-    start_pos = np.where(map == '2')
-    map[start_pos] = 'A'
-    return map
-
-def get_possible_movements(map, idx):
-    available_positions = []
-
-    # Check if the top neighbour exists (idx[0] > 0 to avoid out of bounds)
-    if idx[0] > 0:
-        top_neighbour = map[idx[0] - 1][idx[1]]
-        available_positions.append((idx[0] - 1, idx[1]))  # Add to available positions
+def move_agent(map, action, last_replaced_value):
+    if action == 'LEFT':
+        agent_pos = get_agent_pos(map)
+        map[agent_pos] = last_replaced_value
+        last_replaced_value = map[agent_pos[0], agent_pos[1] - 1]
+        map[agent_pos[0], agent_pos[1] - 1] = 'A'
+    elif action == 'RIGHT':
+        agent_pos = get_agent_pos(map)
+        map[agent_pos] = last_replaced_value
+        last_replaced_value = map[agent_pos[0], agent_pos[1] + 1]
+        map[agent_pos[0], agent_pos[1] + 1] = 'A'
+    elif action == 'TOP':
+        agent_pos = get_agent_pos(map)
+        map[agent_pos] = last_replaced_value
+        last_replaced_value = map[agent_pos[0] - 1, agent_pos[1]]
+        map[agent_pos[0] - 1, agent_pos[1]] = 'A'
+    elif action == 'BOTTOM':
+        agent_pos = get_agent_pos(map)
+        map[agent_pos] = last_replaced_value
+        last_replaced_value = map[agent_pos[0] + 1, agent_pos[1]]
+        map[agent_pos[0] + 1, agent_pos[1]] = 'A'
     
-    # Check if the bottom neighbour exists (idx[0] < len(map) - 1 to avoid out of bounds)
-    if idx[0] < len(map) - 1:
-        bottom_neighbour = map[idx[0] + 1][idx[1]]
-        available_positions.append((idx[0] + 1, idx[1]))  # Add to available positions
+    return map, main_agent_replaced_value
+
+
+
+
+
+#----------------------------------Main function-------------------------------
+
+if __name__ == '__main__':
+    map, goal_position = create_map()
+    map, main_agent_replaced_value = create_main_agent(map, main_agent_replaced_value)
+
+    for iter in range(ITERATIONS):
+        available_movements = get_possible_movements(map, get_agent_pos(map))
+        action = random.randrange(0, len(available_movements))
+        map, main_agent_replaced_value = move_agent(map, available_movements[action], main_agent_replaced_value)
+        print(f'Iteration:  {iter}')
+        print(f'Distance to goal:  {get_metric(get_agent_pos(map), goal_position)}')
+        print('-----------------------------------')
     
-    # Check if the left neighbour exists (idx[1] > 0 to avoid out of bounds)
-    if idx[1] > 0:
-        left_neighbour = map[idx[0]][idx[1] - 1]
-        available_positions.append((idx[0], idx[1] - 1))  # Add to available positions
-    
-    # Check if the right neighbour exists (idx[1] < len(map[0]) - 1 to avoid out of bounds)
-    if idx[1] < len(map[0]) - 1:
-        right_neighbour = map[idx[0]][idx[1] + 1]
-        available_positions.append((idx[0], idx[1] + 1))  # Add to available positions
-    
-    return available_positions
 
-
-
-
-with open('map.txt', 'r') as file:
-    map_str = file.read()
-
-
-# Convert string to a 2D list of characters
-map = [list(line) for line in map_str.split('\n')]
-# Convert to a NumPy array for easier manipulation
-map = np.array(map)
-
-map = create_main_agent(map)
-
-show_map(map)
-
-agent_pos = np.where(map == 'A')
-available_actions = get_possible_movements(map, agent_pos)
-print(available_actions)
-
-# for iter in range(ITERATIONS):
-#     action = AGENT_ACTIONS[random.randrange(5)]
-    
-#     if action == 'TOP':
-
-#     pass
-# print(map)
