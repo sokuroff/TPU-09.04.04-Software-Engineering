@@ -66,7 +66,6 @@ class Environment():
         return available_moves
     
     def move_agent(self, agent: Agent, action):
-        val1 = agent.get_metric()
         if action == 'LEFT':
             self.map[agent.pos] = agent.last_replaced_value
             agent.last_replaced_value = self.map[agent.pos[0], agent.pos[1] - 1]
@@ -83,10 +82,6 @@ class Environment():
             self.map[agent.pos] = agent.last_replaced_value
             agent.last_replaced_value = self.map[agent.pos[0] + 1, agent.pos[1]]
             self.map[agent.pos[0] + 1, agent.pos[1]] = 'A'
-        val2 = agent.get_metric()
-
-        reward = val2 - val1
-        return reward
         
         
         
